@@ -1,31 +1,67 @@
-﻿@Code
+﻿@ModelType ListDemo.Models.EmployeeListModel
+
+@Code
     ViewData("Title") = "Home Page"
+    Dim index As Integer = 0
 End Code
+<head runat="server">
+    <link rel="stylesheet" href="/CSS/smoothness/jquery-ui-1.10.3.custom.min.css" />
+    <link rel="stylesheet" href="/CSS/ui.jqgrid.css" />
+    <script src="/Scripts/jquery-3.3.1.min.js" type="text/javascript"></script>
+    <script src="/Scripts/jquery-ui-1.10.3.custom.min.js" type="text/javascript"></script>
+    <script src="/Scripts/jquery.jqGrid.min.js" type="text/javascript"></script>
+    <script src="/Scripts/i18n/grid.locale-ja.js" type="text/javascript"></script>
+</head>
+<script>
+    $(function () {
+        var data = [
+            { color: "Green", name: "有安杏果" },
+            { color: "Pink", name: "佐々木彩夏" },
+            { color: "Red", name: "百田夏菜子" },
+            { color: "Yellow", name: "玉井詩織" },
+            { color: "purple", name: "高城れに" }
+        ];
 
-<div class="jumbotron">
-    <h1>ASP.NET</h1>
-    <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS and JavaScript.</p>
-    <p><a href="https://asp.net" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>
-</div>
+        $("#momoclo").jqGrid({
+            data: data,
+            datatype: "local",
+            colNames: ['色', '名前'],
+            colModel: [
+                { name: 'color' },
+                { name: 'name' }
+            ],
+            caption: 'ももクロ'
+        });
+    });
 
-<div class="row">
-    <div class="col-md-4">
-        <h2>Getting started</h2>
-        <p>
-            ASP.NET MVC gives you a powerful, patterns-based way to build dynamic websites that
-            enables a clean separation of concerns and gives you full control over markup
-            for enjoyable, agile development.
-        </p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301865">Learn more &raquo;</a></p>
-    </div>
-    <div class="col-md-4">
-        <h2>Get more libraries</h2>
-        <p>NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.</p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301866">Learn more &raquo;</a></p>
-    </div>
-    <div class="col-md-4">
-        <h2>Web Hosting</h2>
-        <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>
-    </div>
-</div>
+    table, td, th { border: 2px #808080 solid; }
+
+</script>
+
+@Using (Html.BeginForm("SendResult", "Home", FormMethod.Post))
+    @<table>
+        <thead>
+            <tr>
+                <!--<th>Checked?</th>-->
+                <th>ID</th>
+                <th>Name</th>
+            </tr>
+        </thead>
+        <tbody>
+            @For Each employee In Model.Employees
+                @<tr>
+                    <!--<td>Html.CheckBox(String.Format("Employees[{0}].IsChecked", index), employee.IsChecked)</td>-->
+                    <td>@Html.TextBox(String.Format("Employees[{0}].EmployeeId", index), employee.EmployeeId)</td>
+                    <td>@Html.TextBox(String.Format("Employees[{0}].EmployeeName", index), employee.EmployeeName)</td>
+                </tr>
+                index = index + 1
+            Next
+        </tbody>
+    </table>
+    @*@<input type="submit" value="Send" />*@
+End Using
+     <div>
+         <table id="momoclo"></table>
+     </div>
+
+
